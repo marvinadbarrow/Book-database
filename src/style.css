@@ -1,0 +1,7 @@
+.rating-div{
+    width: 100px; height: auto;
+    display: flex; flex-direction: row;
+}
+
+#rating-img{width: 300px;}
+.img{height:300px}
