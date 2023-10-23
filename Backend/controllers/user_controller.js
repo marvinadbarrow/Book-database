@@ -14,30 +14,19 @@ exports.signup = async (req, res, next) =>{
     // check if in the 'user' collection if email already exists (USEFUL FOR PREVENTING DUPLICATES)
     const userExists = await userSchemaModel.findOne({email})
 
-    //if email exists, it's a duplicate so give error emssage. 
-    if(userExists){
-        return next(new ErrorResponse('email already exists'),400 )
-    }
-
-
     // this will not run if the above check fails (find out how this works)
  try {
 
     // create a new user using the request body, which will be a json document for the database, with 'firstName', 'email' and 'password' as fields with completed values
     const newUser = await userSchemaModel.create(req.body)
 res.status(201).json({ // render a json object with success message , and also new user object
-            
     success:true,
     newUser
-
 })
  }catch(error){
 console.log(error)
-res.status(400).json({
-   // if creation of new user fails then alert user with error message (if the process fails)
-    success:false,
-    message: error.message
-})
+console.log(error.name)
+next(error)
  }
 }
 
@@ -125,7 +114,7 @@ exports.singleUser = async (req, res, next) =>{
     //     success: false,
     //     message: error.message
     //    })
-  return  next(new ErrorResponse(`User ID: ${req.params._id}, is not recognized`),404 )
+  return  next(error )
     }
 
    

@@ -1,0 +1,10 @@
+#root {
+  width: 100%;
+  margin: auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.nav-links-div{width: 100%; height: auto; display: flex; flex-direction: row; justify-content: space-around;}
+
+.about-div{width: 100%; height: auto;}

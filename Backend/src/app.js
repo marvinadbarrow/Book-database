@@ -13,6 +13,7 @@ const morgan = require('morgan')
 const connectionString = process.env.CONNECTION_STRING
 const booksUrl = process.env.BOOKS_DATABASE  // URL for books DB in dotenv
 const url = booksUrl
+const cors = require('cors')
 const cookieParser  = require('cookie-parser')
 const errorHandler = require('../error handlers/error')
 
@@ -45,6 +46,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true}) // con
 
 app.use(express.json()) // this is used to 'parse' the body in post requests. 
 app.use(morgan('dev'))
+// app.use(cors())
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(userRoute) 
