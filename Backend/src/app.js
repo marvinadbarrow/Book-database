@@ -5,7 +5,7 @@ const path = require('path')
 const fs = require('fs')
 const bodyParser = require('body-parser')
 require('dotenv').config()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 5000
 const booksrRoutes = require('../routes/user_books') // this is actually the express.Router
 const kindleBooksrRoute = require('../routes/user_kindleBooks')
 const userRoute = require('../routes/user_route') // route for user signup, login, log out etc
@@ -37,7 +37,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true}) // con
     console.log('connection successful')
     // only listen to the port if the connection to the database is successful
     app.listen(PORT, (req, res) =>{
-        console.log('server running on port 3000');    
+        console.log('server running on port 5000');    
     })
 })
 .catch(err => {
@@ -46,7 +46,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true}) // con
 
 app.use(express.json()) // this is used to 'parse' the body in post requests. 
 app.use(morgan('dev'))
-// app.use(cors())
+app.use(cors())
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(userRoute) 

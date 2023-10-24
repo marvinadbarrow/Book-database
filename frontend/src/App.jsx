@@ -10,7 +10,10 @@ import { Navbar } from './components/Navbar'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { SignUp } from './pages/SignUp';
-import { Signin } from './pages/SignIn';
+import { Login } from './pages/Login';
+import {BooksMath} from './pages/BooksMath'
+import { GetUser } from './pages/GetUser';
+import { UsersView } from './pages/UsersView';
 
 
 
@@ -56,9 +59,22 @@ setJokes(response.data.setup + '......' + response.data.punchline)
 </Route>
 
 
-<Route exact path='/signin'>
-<Signin/>
+<Route exact path='/login'>
+<Login/>
 </Route>
+
+<Route exact path='/users/:_id'>
+<GetUser/>
+</Route>
+
+<Route exact path='/maths'>
+<BooksMath/>
+</Route>
+
+<Route exact path='/users_all'>
+<UsersView/>
+</Route>
+
 
   </Switch>
 </div>

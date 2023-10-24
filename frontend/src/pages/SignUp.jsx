@@ -1,5 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios'
+
+// import toastify
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
 export const SignUp = () =>{
 
 
@@ -11,6 +18,23 @@ const [credentials, setCredentials] = useState({
 })
 
 
+// test for notify
+const notify = (message, type) =>{
+
+    switch(type){
+case 'success':   toast.success(message, {
+    position: toast.POSITION.TOP_CENTER
+  });
+break;
+default:  toast.error(message, {
+    position: toast.POSITION.TOP_RIGHT
+  })
+    }
+
+} 
+
+
+// function for display changing inputs text
 const handleChange = (e) =>{
 let name = e.target.name
 let value = e.target.value
@@ -25,44 +49,37 @@ setCredentials(lastInput =>{
 
 }
 
-
-const handleClick = (e) =>{
+// post form details on click
+const handleClick = async (e) =>{
     e.preventDefault()
+    try{
+        console.log('submitting form')
 
-console.log('submitting form')
-  console.log(credentials)
-    // try{
+   let testPost = await axios.post('http://localhost:5000/signup', credentials)
+   .then(res =>{
+    console.log(res.data)
 
-    //     const signUser = await axios.post('/signup', signupObj)
+            // success message for 'toast' 
+    let successMessage = `user, ${credentials.email} successfully created`
+    notify(successMessage, 'success')
+   })
 
-    //     console.log(signUser)
-
-    //     if(signUser.data.success === true){
-    //         setName('')
-    //         setEmail('')
-    //         setPassword('')
-    //     }
-    // }
-    // catch(err){
-    //     console.log(err.message)
-    // }
- 
-
-    // then you'll have to send this in a post request to the backend
-
-
+        // because we're not sending the form, the values inside the form need to be cleared
+    }
+    catch(err){
+        // error message for 'toast' 
+        let errorMessage = err.response.data.error
+          notify(errorMessage, 'error')
+    }
 }
 
 
 
 
-
     return(
-
-
         <>
-
         <p className="signin-para">Sign up for an account</p>
+
 
 
        <form action="" className="signup-form">
@@ -90,12 +107,14 @@ console.log('submitting form')
 </div>
 
 <button className='test-btn' onClick={handleClick}>Sign Up</button>
-
-
 </form>
         
+
+
+<div>
+           <ToastContainer />
+      </div>
         </>
-        
-   
+          
     )
 }

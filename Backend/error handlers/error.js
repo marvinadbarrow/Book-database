@@ -14,7 +14,7 @@ error.message = err.message
     }
 // if error code returned by database is 11000 (due to duplicate email at attempted signup)
 if(err.code === 11000){
-    const message = 'Duplicate email value entered'
+    const message = 'Duplicate email: User already exists'
     error = new ErrorResponse(message, 404)
 }
 
@@ -34,7 +34,6 @@ module.exports = errorHandler;
 
 
 /*
-
     "firstName": "mynameWasMarvin",
     "email": "mynameWasMarvin@gmail.com",
     "password": "mynameWasMarvinDef456"

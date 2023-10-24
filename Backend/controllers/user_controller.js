@@ -1,7 +1,6 @@
+// the controller is basically the callback function which dictates what happens when a request is sent to the route. The route is just the API end point.  The  callback will respond, either with error message or something or some confirmation that all is well, and the resource that was called for gets sent to the client, whether that be a web page, or an image or some other object.  If it were not for the callback, the client would not have any information to give the user if there were issues with the request or the server. The front end can take the response data and format it to be of use to the user at client end.  The callback is basically a set of conditions that, if met, will allow the resource to be sent to the client, and, if not, will generate some kind of error to send back to the client, which can be interpreted, formated and rendered to the user. 
 
-// controller handles the logic for user route
-
-
+// so an XML request consists of GET(URL, options), and if the URL doesn't exist on the endpoint, then an ERROR message is returned to the user, and with POST(URL, data, options), data is sent with a request to post it to the endpoint... if something is wrong in the data, then the conditions in the callback associated with the route will be triggered, and a response will be sent back to the user indicating such. 
 
 const userSchemaModel = require('../schemas/user_schema')
 const bodyParser = require('body-parser')
@@ -13,7 +12,7 @@ exports.signup = async (req, res, next) =>{
 
     // check if in the 'user' collection if email already exists (USEFUL FOR PREVENTING DUPLICATES)
     const userExists = await userSchemaModel.findOne({email})
-
+console.log(userExists)
     // this will not run if the above check fails (find out how this works)
  try {
 
@@ -35,26 +34,29 @@ next(error)
 // callback function for user route
 exports.login = async (req, res, next) =>{
     try{
-        // check if there if email or password are missing and render success false if true
+      
         const {email, password} = req.body // destructure request body for email and password
-
-        if(!email || !password){ // if either are missing
+// check those actually exist
+        if(!email || !password){ // if either are missing process error
 return next(new ErrorResponse("email and password are required"),400 ) }
 
-        // check existence of user email - this gets the whole object as it is on the db and checks the particular key:value pair, await since the search could be long
+
+        //if email and pw are present, check if any email in the DB matches req.body email, and if so, assign the user associated with the email the userDetails variable. 
         const userDetails = await userSchemaModel.findOne({email:email})
         console.log(userDetails)
         if(!userDetails){ // if the email isn't found, could be wrongly inputted email or not at all in system
          return   next(new ErrorResponse("invalid credentials"),400 )
         }
 
-        // verify user password. 
+
+
+    // if the email is valid, verify password matches user. 
         const isMatched = await userDetails.comparePassword(password);
         if(!isMatched){ // if is matched is not true (i.e. the password doesn't natch anything in the usermodels, the collection)
         return    next(new ErrorResponse("invalid credentials"),400 )
         }
 
-        generateCookieToken(userDetails, 200, res) // this calls the function for generating web tokens and saving cookies, using the user details, 200 for the statusCode and the response object?? 
+        generateCookieToken(userDetails, 200, res) // this calls the function for generating web tokens and saving to cookie; arguments are  the user details, statusCode 200 the response object?? 
 
 
     }catch(error){ // if any of the above tests fail, the user has done something incorrect so render success false and alert user 
@@ -63,7 +65,7 @@ next(new ErrorResponse("cannot log in, please check your credentials"),400 )
     }
 }
 
-// GENERATE JWT token and cookie
+// GENERATE JWT token and cookie (the token is stored in the cookie)
 const generateCookieToken = async (userDetails, statusCode, res) =>{
     const webToken = await userDetails.generateWebToken() // this is string value generated and returned by jwt.sign() which is inside the function on userSchema module. The function was created as a custom method on the schema. The function is executed on user details, and uses the users ID, along with the JWT_SECRET that you set up in .env, and an expiry time, to return a token using jwt.sign(), and the token is what is awaited here; and when it returns is assined the variable 'webToken'. 
 
@@ -90,7 +92,7 @@ exports.logout = (req, res, next) =>{
     })
 }
 
-// GET USER BY ID
+// GET USER BY ID (this might be used by an administrator to see if a user exists and if they do, then to view their details; which makes sense that it would be the callback in a GET request)
 exports.singleUser = async (req, res, next) =>{
 // get user from collection using id which is the query parameter set in the get url
 
@@ -121,3 +123,33 @@ exports.singleUser = async (req, res, next) =>{
     
 }
 
+
+exports.usersView = async (req, res, next) =>{
+
+    try {
+
+
+        // find all users and assign variable 
+        const allUsers = await userSchemaModel.find()
+
+        if(allUsers){
+            
+            res.json({
+                success:true,
+                allUsers
+            }) 
+        }
+        else(
+            res.json({
+                success:false,
+                "Error": "no users found"
+            }) 
+        )
+    } catch (error){
+        return next (error)
+
+    }
+
+  
+
+}

@@ -6,5 +6,47 @@
 }
 
 .nav-links-div{width: 100%; height: auto; display: flex; flex-direction: row; justify-content: space-around;}
-
 .about-div{width: 100%; height: auto;}
+
+/* USER details div */
+.individual-user{width: fit-content; height: auto; margin: auto;margin-top: 4%; border: solid white 3px; border-radius: 5px; padding: 1% 3%; }
+.user-data{margin: 2px 0px; margin-left: 0px; text-align: left;}
+.users-div{width: 90%; height: auto; display: flex; margin: auto; flex-wrap: wrap; margin-bottom: 50px;}
+.view-users{font-size: 25px;}
+.list-of-users{padding-left: 0px;}
+
+
+/* book details - SMALL */
+.individual-book-details{width: fit-content; height: fit-content;  border: solid white 3px; border-radius: 5px; padding: 1% 3%; }
+.book-data{margin: 2px 0px; margin-left: 0px; text-align: left;}
+.book-title{color: yellow;}
+.all-books-btn{font-size: 25px;}
+.book-thumb-small{width: 80%; height: auto;}
+.book-thumb-small:hover{cursor: pointer;}
+.book-format{color: rgb(93, 170, 243);}
+.all-books-btn-div{width: fit-content; height: auto; margin: auto;}
+.book-info-all{width: 30%; display: flex; flex-direction: column; margin-bottom: 3%; margin: auto; margin-bottom: 4%;  border: solid rgb(182, 173, 173) 0.5px; border-radius: 5px; padding: 5px;}
+.stats-and-images{display: flex; flex-direction: column; justify-content: space-around; width: fit-content; align-items: center;}
+
+/* book detaiils - LARGE
+
+individual-book-details
+book-data book-title
+book-data book-format
+book-thumb
+*/
+
+.book-name-large{margin-top: 5%;}
+.book-data{margin: 2px 0px; margin-left: 0px; text-align: left;}
+.book-thumb-large{width: 86%; height: auto; margin: auto;}
+.book-thumb-large:hover{cursor: pointer;}
+.book-large-div{width: 45%; display: flex; flex-direction: column;}
+.genre-list{list-style: none;}
+.genre-div{width: 30%; margin: auto;}
+.book-info-single{width: 90%; display: flex; flex-direction: column; margin-bottom: 3%; margin: auto; margin-bottom: 4%;  border: solid rgb(182, 173, 173) 0.5px; border-radius: 5px; padding: 15px 10px;}
+.individual-book-details{width: fit-content; height: fit-content;  border: solid white 3px; border-radius: 5px; padding: 1% 3%; }
+.stats-and-images-single{display: flex; flex-direction: row; justify-content: space-around; width: fit-content; align-items: center; margin-bottom: 2%;}
+.book-title{color: yellow;}
+.books-div{width: 98%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap;}
+.book-format{color: rgb(93, 170, 243);}
+.buy-url{font-size: 18px;}
