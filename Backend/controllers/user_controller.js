@@ -7,6 +7,11 @@ const bodyParser = require('body-parser')
 const ErrorResponse = require('../error handlers/custom_error')
 // CREATING A NEW USER
 // callback function for user route
+
+
+
+
+
 exports.signup = async (req, res, next) =>{
     const {email} = req.body // destructure email from request body
 
@@ -40,15 +45,12 @@ exports.login = async (req, res, next) =>{
         if(!email || !password){ // if either are missing process error
 return next(new ErrorResponse("email and password are required"),400 ) }
 
-
         //if email and pw are present, check if any email in the DB matches req.body email, and if so, assign the user associated with the email the userDetails variable. 
         const userDetails = await userSchemaModel.findOne({email:email})
         console.log(userDetails)
         if(!userDetails){ // if the email isn't found, could be wrongly inputted email or not at all in system
          return   next(new ErrorResponse("invalid credentials"),400 )
         }
-
-
 
     // if the email is valid, verify password matches user. 
         const isMatched = await userDetails.comparePassword(password);
@@ -58,6 +60,7 @@ return next(new ErrorResponse("email and password are required"),400 ) }
 
         generateCookieToken(userDetails, 200, res) // this calls the function for generating web tokens and saving to cookie; arguments are  the user details, statusCode 200 the response object?? 
 
+        await userSchemaModel.updateOne({email:email}, {$set:{IsLoggedIn: true}})
 
     }catch(error){ // if any of the above tests fail, the user has done something incorrect so render success false and alert user 
 console.log(error)
@@ -151,5 +154,52 @@ exports.usersView = async (req, res, next) =>{
     }
 
   
+
+}
+
+// update specific fields in user document object
+exports.userUpdate = async (req, res, next) =>{
+
+    let queryId = {_id:req.params._id} // query object to find user
+    let testBody = req.body;// to check if login status is being updated
+    let updateObject; // variable specifically for 'IsLoggedIn' field
+    let updateKey = Object.keys(testBody) // check uptate object key - if the key is 'IsLoggedIn', its value is 'true' or 'false' and is a string, which needs to be converted to a Boolean
+
+
+    if(updateKey == 'IsLoggedIn'){//if the 'IsLoggedIn' is the update field
+if(testBody.IsLoggedIn == 'true'){ // if the field value is true
+    updateObject = { // set update object field value to 'Boolean' true
+        IsLoggedIn:true
+    }
+}else{ // if the field value is true
+    updateObject = { // set update object field value to 'Boolean' false
+        IsLoggedIn:false
+    }
+
+}
+    }else{ // use request body since other fields don't require Boolean value
+        updateObject = testBody;
+    }
+
+
+    try{
+        // updateOne() contains two required arguments, the query object with key;value pair which identifies the specific document, and an object specifying what alternation needs to be made. 
+
+        const userDetails = await userSchemaModel.updateOne(queryId, {$set:updateObject})
+
+        // get userInfo to return to client
+        const userInfo = await userSchemaModel.find(queryId)
+
+        res.status(201).json({ // render a json object with success message , and also new user object
+            success:true,
+            "user": userInfo
+        })
+
+    }
+    catch(error){
+
+
+    }
+
 
 }

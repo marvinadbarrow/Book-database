@@ -37,6 +37,9 @@ email:{type:String,
 ]
    },
 
+   IsLoggedIn:{type:Boolean},
+ 
+
    role:{
     type:Number,
     default:0,
@@ -44,7 +47,9 @@ email:{type:String,
 }, {timestamps:true});
 
 
-
+// this is used to set the login field's default value
+// userSchema.path('IsLoggedIn')
+// .default(true),
 
 
  // METHODS
@@ -53,7 +58,7 @@ email:{type:String,
 // learn next()
 
 
-// HAS PASSWORD
+// HASH PASSWORD
 userSchema.pre('save', async function(next){
 if(!this.isModified('password')){ // if password is not modified go to next()
     next()
