@@ -7,33 +7,26 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export const BooksMath = () =>{
+export const BooksStem = () =>{
 
 // state for book details modal
 const [viewBookDetails, setViewBookDetails] = useState('')
 
-
-
 // state for all books
     const [returnedBooks, setReturnedBooks] = useState([])
 
-
-
     const showBooks = async() =>{
-
 
         try{
 
-            let books = await axios.get('http://localhost:5000/books/mathematics')
+let books = await axios.get('http://localhost:5000/books/other_stems')
             .then(res =>{        
     let bookList = res.data
        if(bookList.length > 0){
         setReturnedBooks([...bookList])
        }
-      
             })
-
-                
+      
         }
         catch(err){
                  let errorText = 'Alert' +  err.response.statusText +': ' + err.response.status
@@ -41,20 +34,9 @@ const [viewBookDetails, setViewBookDetails] = useState('')
                 position: toast.POSITION.TOP_RIGHT
               });
 
-
         }
-
-
-
-
-
     }
-    
- 
-
-
-    
-
+       
 const showBookDetails = (viewTitle) =>{
     let selectedBook
     console.log('clicked book')
@@ -91,7 +73,7 @@ setViewBookDetails('')
          viewBookDetails =='' &&
 
 <>
-<h1>Maths Books</h1>
+<h1>STEM Books</h1>
         
         <div className="books-div">
            
@@ -118,9 +100,7 @@ showBookDetails(bookx.Title)
 </div>
             </>
         )
-
-    
-    })
+     })
 }         
         </div>
 
@@ -129,10 +109,8 @@ showBookDetails(bookx.Title)
 }
 
 </>
-
 }
-    
-                </>
+    </>
     )
 }
 

@@ -1,6 +1,7 @@
-// the controller is basically the callback function which dictates what happens when a request is sent to the route. The route is just the API end point.  The  callback will respond, either with error message or something or some confirmation that all is well, and the resource that was called for gets sent to the client, whether that be a web page, or an image or some other object.  If it were not for the callback, the client would not have any information to give the user if there were issues with the request or the server. The front end can take the response data and format it to be of use to the user at client end.  The callback is basically a set of conditions that, if met, will allow the resource to be sent to the client, and, if not, will generate some kind of error to send back to the client, which can be interpreted, formated and rendered to the user. 
+// the controller is basically the callback function which dictates what happens when a request is sent to the route. The route is just the API end point.  The  callback will respond, either with error message or something or some confirmation that all is well (which can be the defaul ERROR message or customized by the developer). The requested resource is sent to the client, whether that be a web page, or an image or some other object. The requirements are specified in the callback.  The specifics of the controllers on this page is that they execute methods or requests on the schema model, whether that be using the model to post documents to the database, or get info from the database, patch to documents etc.   If it were not for the callback, the client would only get the generic error information which won't explain why the error occurs; several other things could not be done, such as checking for authorization, or correct request parameter formats, creating cookies, hashing passwords, verfying passwords etc.  All of this is done in the callback. 
 
-// so an XML request consists of GET(URL, options), and if the URL doesn't exist on the endpoint, then an ERROR message is returned to the user, and with POST(URL, data, options), data is sent with a request to post it to the endpoint... if something is wrong in the data, then the conditions in the callback associated with the route will be triggered, and a response will be sent back to the user indicating such. 
+
+// so an XML request consists of GET(URL, options), and if the URL doesn't exist on the endpoint, then an ERROR message is returned to the user, and with POST(URL, data, options), data is sent with a request to post it to the endpoint... if something is wrong in the data, then the conditions in the callback associated with the route will be triggered, and a response will be sent back to the client making the request. I guess the keeping the controllers in one place makes things modular. 
 
 const userSchemaModel = require('../schemas/user_schema')
 const bodyParser = require('body-parser')
@@ -18,6 +19,10 @@ exports.signup = async (req, res, next) =>{
     // check if in the 'user' collection if email already exists (USEFUL FOR PREVENTING DUPLICATES)
     const userExists = await userSchemaModel.findOne({email})
 console.log(userExists)
+
+if(userExists){
+    return  next(new ErrorResponse("email already exists"),400 )
+}
     // this will not run if the above check fails (find out how this works)
  try {
 
@@ -87,7 +92,9 @@ const generateCookieToken = async (userDetails, statusCode, res) =>{
 }
 
 //  LOGOUT
-exports.logout = (req, res, next) =>{
+exports.logout = async (req, res, next) =>{
+console.log(res.cookie)
+    // await userSchemaModel.updateOne({email:email}, {$set:{IsLoggedIn: false}})
     res.clearCookie('token')
     res.status(200).json({
         success:true,
@@ -202,4 +209,9 @@ if(testBody.IsLoggedIn == 'true'){ // if the field value is true
     }
 
 
+}
+
+exports.userDashboard = async (req, res, next) =>{
+
+    
 }

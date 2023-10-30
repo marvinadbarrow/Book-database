@@ -1,8 +1,5 @@
 export const BookDetails = (viewBookDetails) =>{
 
-    console.log(viewBookDetails)
-    console.log(viewBookDetails.viewAll)
-
 
 let thisBook = viewBookDetails.viewBookDetails
 let backToBooks = viewBookDetails.viewAll

@@ -16,6 +16,7 @@ const url = booksUrl
 const cors = require('cors')
 const cookieParser  = require('cookie-parser')
 const errorHandler = require('../error handlers/error')
+const adminRoute = require('../routes/admin_route')
 
 
 // list names of rating star images
@@ -28,8 +29,6 @@ if (err){
      })
 }
 })
-
-
 
 //NOTE --- This is connecting to a DATABASE initially, NOT a collection.  And that's why you're unable to access say, math books and music albums at the same time; because BOOKS and MUSIC are actually different databases.  mongoose.connect(url, cb) connects to a main database. 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true}) // connect to a specific db
@@ -52,7 +51,7 @@ app.use(bodyParser.json())
 app.use(userRoute) 
 app.use('/books', booksrRoutes)
 app.use('/books', kindleBooksrRoute)
-
+app.use(adminRoute)
 
 //error middleware 
 app.use(errorHandler)

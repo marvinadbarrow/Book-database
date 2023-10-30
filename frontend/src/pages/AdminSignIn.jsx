@@ -1,10 +1,12 @@
-// import toastify
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useState } from 'react';
 import axios from 'axios';
-export const Login = () =>{
+
+
+export const AdminSignIn = () =>{
 
     const [credentials, setCredentials] = useState({
         email:'',
@@ -26,8 +28,6 @@ const handleChange = (e) =>{
   
         })
     }
-
-
     const handleSubmit = async (e) =>{
         e.preventDefault()
 
@@ -62,30 +62,29 @@ const handleChange = (e) =>{
         }
          }
 
-
-
     return(
-       <>
+
+        <>
     
-        <p className="signin-para">sign in to your account</p>
+        <p className="signin-para">Log in to ADMIN page</p>
 
 
-       <form className="login-form">
+       <form className="admin-form">
        <div className="input-container">
 
 
 <div className="form-element">
 <div className="email mb-3">
-    <label className='form-label' htmlFor="email">first name</label>
-    <input type='text' name='email' id='email' placeholder='email' onChange={handleChange} value={credentials.email} className='form-control'/>
+    <label className='form-label' htmlFor="email">Admin email</label>
+    <input type='text' name='email' id='email' placeholder='admin email' onChange={handleChange} value={credentials.email} className='form-control'/>
 </div>
 </div>
 
 
 <div className="form-element">
 <div className="password mb-3">
-    <label className='form-label' htmlFor="password">password</label>
-    <input type='text' name='password' id='password' placeholder='password' onChange={handleChange} value={credentials.password} className='form-control'/>
+    <label className='form-label' htmlFor="password">Admin password</label>
+    <input type='text' name='password' id='password' placeholder='admin password' onChange={handleChange} value={credentials.password} className='form-control'/>
 </div>
 </div>
 
@@ -96,5 +95,6 @@ const handleChange = (e) =>{
        </form>
        <ToastContainer />
        </>
+      
     )
 }

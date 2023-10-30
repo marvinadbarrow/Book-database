@@ -19,19 +19,19 @@ const [credentials, setCredentials] = useState({
 
 
 // test for notify
-const notify = (message, type) =>{
+// const notify = (message, type) =>{
 
-    switch(type){
-case 'success':   toast.success(message, {
-    position: toast.POSITION.TOP_CENTER
-  });
-break;
-default:  toast.error(message, {
-    position: toast.POSITION.TOP_RIGHT
-  })
-    }
+//     switch(type){
+// case 'success':   toast.success(message, {
+//     position: toast.POSITION.TOP_CENTER
+//   });
+// break;
+// default:  toast.error(message, {
+//     position: toast.POSITION.TOP_RIGHT
+//   })
+//     }
 
-} 
+// } 
 
 
 // function for display changing inputs text
@@ -61,7 +61,9 @@ const handleClick = async (e) =>{
 
             // success message for 'toast' 
     let successMessage = `user, ${credentials.email} successfully created`
-    notify(successMessage, 'success')
+    toast.success(successMessage, {
+        position: toast.POSITION.TOP_RIGHT
+      })
    })
 
         // because we're not sending the form, the values inside the form need to be cleared
@@ -69,7 +71,9 @@ const handleClick = async (e) =>{
     catch(err){
         // error message for 'toast' 
         let errorMessage = err.response.data.error
-          notify(errorMessage, 'error')
+        toast.error(errorMessage, {
+            position: toast.POSITION.TOP_CENTER
+          });
     }
 }
 
@@ -83,30 +87,35 @@ const handleClick = async (e) =>{
 
 
        <form action="" className="signup-form">
+
+<div className="input-container">
+
 <div className="form-element">
-<div className="firstName">
+<div className="firstName mb-3">
     <label className='form-label' htmlFor="firstName">First Name</label>
-    <input  onChange={handleChange}  value={credentials.firstName} type='text' name='firstName' id='firstName' placeholder='first name'/>
+    <input  onChange={handleChange}  value={credentials.firstName} type='text' name='firstName' id='firstName' placeholder='first name' className='form-control'/>
 </div>
 </div>
 
 
 <div className="form-element">
-<div className="email">
+<div className="email mb-3">
     <label className='form-label' htmlFor="email">Email</label>
-    <input  onChange={handleChange}  value={credentials.email} type='text' name='email' id='email' placeholder='first name'/>
+    <input  onChange={handleChange}  value={credentials.email} type='text' name='email' id='email' placeholder='email' className='form-control'/>
 </div>
 </div>
 
 
 <div className="form-element">
-<div className="password">
+<div className="password mb-3">
     <label className='form-label' htmlFor="password">Password</label>
-    <input  onChange={handleChange}  value={credentials.password} type='text' name='password' id='password' placeholder='first name'/>
+    <input  onChange={handleChange}  value={credentials.password} type='text' name='password' id='password' placeholder='password' className='form-control'/>
 </div>
 </div>
 
-<button className='test-btn' onClick={handleClick}>Sign Up</button>
+</div>
+
+<button type="button" className="btn btn-primary btn-lg" onClick={handleClick}>Sign Up</button>
 </form>
         
 

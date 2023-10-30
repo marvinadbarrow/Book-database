@@ -14,27 +14,24 @@ import { Login } from './pages/Login';
 import {BooksMath} from './pages/BooksMath'
 import { GetUser } from './pages/GetUser';
 import { UsersView } from './pages/UsersView';
+import { Footer } from './components/footer';
+import { AdminSignIn } from './pages/AdminSignIn';
+import { BooksStem } from './pages/BooksStem';
+import {KindleMath} from './pages/KindleMath'
 
+let tempName = 'John'
 
-
+console.log(<Footer tempName={tempName}/>)
 
 function App() {
-
-
-function getApiBack(){
-  Axios.get('https://official-joke-api.appspot.com/random_joke')
-  .then(response =>{
-setJokes(response.data.setup + '......' + response.data.punchline)
-  })
-
-}
-
 
 
   return (
     <>
  <Router>
 <div className="content-div">
+
+
 <Navbar/>
 
   <Switch>
@@ -71,12 +68,25 @@ setJokes(response.data.setup + '......' + response.data.punchline)
 <BooksMath/>
 </Route>
 
+<Route exact path='/other_stems'>
+<BooksStem/>
+</Route>
+
+<Route exact path='/kindle_maths'>
+<KindleMath/>
+</Route>
+
 <Route exact path='/users_all'>
 <UsersView/>
 </Route>
 
+<Route exact path='/admins'>
+<AdminSignIn/>
+</Route>
 
   </Switch>
+<Footer/>
+
 </div>
 
 

@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export const BooksMath = () =>{
+export const KindleMath = () =>{
 
 // state for book details modal
 const [viewBookDetails, setViewBookDetails] = useState('')
@@ -24,7 +24,7 @@ const [viewBookDetails, setViewBookDetails] = useState('')
 
         try{
 
-            let books = await axios.get('http://localhost:5000/books/mathematics')
+            let books = await axios.get('http://localhost:5000/books/kindle_maths')
             .then(res =>{        
     let bookList = res.data
        if(bookList.length > 0){
@@ -91,7 +91,7 @@ setViewBookDetails('')
          viewBookDetails =='' &&
 
 <>
-<h1>Maths Books</h1>
+<h1>Kindle Math</h1>
         
         <div className="books-div">
            

@@ -128,9 +128,7 @@ booksrRoute.get('/mathematics/:_id',  (req, res) =>{
 
 // GET all STEM books
 booksrRoute.get('/other_stems',  (req, res) =>{
-
-
-   let pageNumber = req.query.page || 0 // page number will either be zero, or query page value
+let pageNumber = req.query.page || 0 // page number will either be zero, or query page value
 let displayXBooks = 5
 
    StemBookStore.find()
