@@ -1,0 +1,4 @@
+EXPRESS INFO
+
+What is a rout?
+It is basically just a link to a static or dynamic web page. 

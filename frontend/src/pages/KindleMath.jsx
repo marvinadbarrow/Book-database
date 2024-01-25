@@ -24,7 +24,7 @@ const [viewBookDetails, setViewBookDetails] = useState('')
 
         try{
 
-            let books = await axios.get('http://localhost:5000/books/kindle_maths')
+            let books = await axios.get('http://localhost:3000/books/kindle_maths')
             .then(res =>{        
     let bookList = res.data
        if(bookList.length > 0){
@@ -36,10 +36,11 @@ const [viewBookDetails, setViewBookDetails] = useState('')
                 
         }
         catch(err){
-                 let errorText = 'Alert' +  err.response.statusText +': ' + err.response.status
-            toast.error(errorText, {
-                position: toast.POSITION.TOP_RIGHT
-              });
+            console.log(err)
+            //      let errorText = 'Alert' +  err.response.statusText +': ' + err.response.status
+            // toast.error(errorText, {
+            //     position: toast.POSITION.TOP_RIGHT
+            //   });
 
 
         }

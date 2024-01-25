@@ -1,0 +1,17 @@
+Gives all contents of collection
+ db["Stevie Wonder"].find()
+
+create collection (in this example)
+ db.createCollection("Stevie Wonder")
+
+to view an existing database, or creates a 'pseudo' collection.  The latter will only become a true collection once content is added. 
+mongosh> use music
+
+add 'one' object to a collection:
+ db["Stevie Wonder"].insertOne({'object key:value pairs})
+
+add many objects to a collection
+ db["Stevie Wonder"].insertMany([array of objects])
+
+sorting by track title (1 for acending -1 for descending)
+ db["Gimcracks and Gewgaws"].find().sort({Title:1})

@@ -5,6 +5,12 @@ import { BookDetails } from "./BookDetails"
 // import toastify
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { PaginationStrip } from "../components/PaginationStrip";
+import { MainButtonsContainer } from "../components/MainButtonsContainer";
+import { BookShelf } from "../components/BookShelf";
+import { AddNewBook } from "./AddNewBook";
+import { BookEditElement } from "../components/BookEditElement";
+
 
 
 export const BooksStem = () =>{
@@ -19,7 +25,7 @@ const [viewBookDetails, setViewBookDetails] = useState('')
 
         try{
 
-let books = await axios.get('http://localhost:5000/books/other_stems')
+let books = await axios.get('http://localhost:3000/books/other_stems')
             .then(res =>{        
     let bookList = res.data
        if(bookList.length > 0){

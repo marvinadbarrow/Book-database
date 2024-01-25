@@ -1,0 +1,9 @@
+sign up 
+signin: (admin and normal)
+logout:  (admin and normal)
+view book:  (admin and normal)
+create book (admin only)
+delete book (admin only)
+update book (admin only)
+user profile (admin or normal user to view their own profile)
+view users (admin only)

@@ -1,0 +1,71 @@
+MIDDLEWARE is anything that happens between initiation of a process and the end of it. 
+
+An example of this is a GET request, where client sends the request via page look up or refresh, and then the 'get' request starts and then sends the response to the home page, e.g res.send('HELLO WORLD'), which is then recived by the browser.  It's technically what happens. 
+
+Finally I get what 'next()' is used for in (req, res, next), it's as function 
+What it does is, when executed, it calls the next middleware(), after the completion of the current one. 
+an example would be a signin page where the credentials are verified and then the get request is executed so that the user pages can be viewed: 
+
+Example:
+
+exports.signin = (req, res, next) =>{
+
+let user = req.body; // this is the JSON with user info that is sent from the body of postman for example
+let userExists = UserProfile.find({user: id}); // search database collection for the specific Id
+
+
+
+
+if(userExists){
+res.status(200).json({
+success: true,
+userExists //  shows the user profile
+
+})
+next()
+};
+
+
+
+app.use('/user', callback)
+
+// if the user exists in the database above then a status of 200 will be returned along with the success:true message and the user details in the response body.  But since the next() function is used, the app.use() middlewear which is next in line will be executed and the user will be taken to the welcome page.  Without the next() keyword, the process would stop at the vefirication of the existence of the user in the database.  
+
+Note that, the next() function executes the next middleware that has not been already executed, so in the below scenario the users page will run 'next' if you were already on the home page: 
+
+
+
+
+exports.signin = (req, res, next) =>{
+
+let user = req.body; // this is the JSON with user info that is sent from the body of postman for example
+let userExists = UserProfile.find({user: id}); // search database collection for the specific Id
+
+if(userExists){
+res.status(200).json({
+success: true,
+userExists
+
+})
+next()
+};
+
+
+
+app.get('/', (req,res, next) =>{
+res.send('Home Page')
+})
+
+app.get('/user', (req, res) =>{
+res.send('welcome User')
+})
+
+
+The homePage function could either be before or after the signin process, it won't matter because when you're signing in, you're already on the home page so the NEXT operation has to be the GET userpage (unless the signin fails and then I assume it'll take you to some kind of error 'next'). BUT, the NEXT keyword must refer to a function that's written 'AFTER' the function which actually calls it, so if user was not after the signin, you would never get to the  user page. 
+
+MULTIPLE REQUESTS RUNNING.  
+I just realized why there are multiple requests running concurrently. 
+It's because whenever a request is made (get post put delete etc) app use will call the function. So if you post, 
+
+
+https://www.amazon.co.uk/New-Level-Maths-Edexcel-2017-2018-ebook/dp/B06XCVZBZV/ref=rvi_sccl_2/259-2905267-5036248?pd_rd_w=37j16&content-id=amzn1.sym.d56e60fb-87bc-405a-a95d-c5e322a9b3d9&pf_rd_p=d56e60fb-87bc-405a-a95d-c5e322a9b3d9&pf_rd_r=KRN8S2D9ADAJZ87NJBXJ&pd_rd_wg=ivaEu&pd_rd_r=f54906ea-44e5-4c45-ac19-b1f630646c9f&pd_rd_i=B06XCVZBZV&psc=1

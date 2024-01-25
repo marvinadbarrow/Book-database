@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "65277fa19cb68248b9d5a448"
+  },
+  "firstName": "marvin",
+  "email": "nivramworrab@gmail.com",
+  "password": "54Teller8",
+  "role": 0,
+  "createdAt": {
+    "$date": "2023-10-12T05:09:53.556Z"
+  },
+  "updatedAt": {
+    "$date": "2023-10-12T05:09:53.556Z"
+  },
+  "__v": 0
+}]

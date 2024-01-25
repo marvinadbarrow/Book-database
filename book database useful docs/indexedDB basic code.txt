@@ -1,0 +1,28 @@
+// open a request
+const request = indexedDB.open("MyMusicDB", 1);
+
+
+// depending on whether the attempt to open the database succeeds or fails, one of the two below handlers will execute. 
+
+// failure to open
+request.onerror = (event) => {
+
+    // Do something with request.errorCode!
+    console.log('request failed' + event.target.errorCode )
+    console.log(event)
+  };
+
+      // successfully opens
+  request.onsuccess = (event) => {
+    // Do something with request.result!
+    db = event.target.result
+    console.log('request successful')
+    console.log(db)
+    console.log('event:')
+    console.log(event)
+    console.log(request)
+  };
+
+  request.onupgradeneeded = (event) =>{
+
+  }

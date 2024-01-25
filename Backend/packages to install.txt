@@ -1,0 +1,12 @@
+INSTALLED:
+express
+nodemon
+cookie-parser
+cors
+json-web-token
+mongoose
+morgan
+nodemon
+xlsx
+jsonwebtoken
+bcryptjs

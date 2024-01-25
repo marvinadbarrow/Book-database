@@ -1,0 +1,109 @@
+Since indexedDB is only available in the browser, it can't be accessed by NODE
+So the thing to do would be to create a JSON file and then write to it my mapping through your music info spreadsheet.
+
+If it's well organized; actually it is because each album is contained in an array, so you have to work out how to add each array to the JSON object. 
+
+you can get the below data from the first element in each album's array -:
+
+    Artist: 'Stevie Wonder',
+    Album: 'My Cherie Amour',
+    Genre: 'R&B',
+    Year: 1969,
+    Disc: '1 of 1'
+
+... but still include all of the data with each song, because you might want to search for all songs of a particular category, i.e. genre, year, artist, album, so each object in the object store needs to have those properties (which can be used as INDEXES in indexedDB)
+
+
+
+
+
+
+
+
+
+SAVING THE ALBUM INFO TO A SPREADSHEET (I'm using Open office which is an ODS file)----------------------------------------
+-Open Itunes
+-Place CD into DVD reader
+-Cancel import (you can do that later) and click into the track area, then select all (CTRL + A)
+-Right click and select copy
+-Go to spreadsheet and if there are no new worksheets create one
+-Paste the info into cell A2
+-Write info headings, Artist, Album, Title... etc, into the appropriate column on row '1' of the worksheet. 
+-Copy the album title from one of the cells
+-Double click the worksheet tab at the bottom of the sheet
+-past the album name into the 'Name'input highlighted in blue;
+-Click OK
+-The worksheet name is now the album title. 
+
+
+(NOTE: an easier way of doing the above would be to import the CD when asked by Itunes and then create a CSV export of the data (which I think is possible), once the album is in your Itunes library; the CSV format can be imported into the MongoDB Compass app. I didn't do it this way because I've yet to create enough drive space to hold all of the audio files; if you have the space, then it's reasonable to import the tracks immediately, and then you'll be able to bypass the excel spreadsheet stage, which is only used because I need to copy the album info from the itunes display (as it is not yet in the library) to the spreadsheet in order to use xlsx to convert the data to an array containing JS objects, and to convert THAT to a JSON file which you can then import using MongoDb Compass)
+
+
+STEPS FOR SAVING AN ALBUM TO THE MONGO DATABASE-------------------------------------------------------------------------------------
+NODE needs to be installed on your computer FIRST;
+
+installing xlsx
+run CMD and use the commands:
+'npm install xlsx' (it's fine do open the CMD from the project folder, or open the project folder in VS code and run the command from terminal) or, if you prefer, do it globally
+Then assuming NODE is installed import the fileSystem module with a command such as 'const fs = require('fs')'
+Then import the xlsx library with the command, 'const xlsx = require('xlsx')'
+
+ // create and assign a variable to the entire workbook (this is an initial setup for each workbook needed); I've used the abbreviation 'wb' to mean workbook variable
+//the argument is the spreadsheet name, including extension. If it's in a different folder than the root you need to use '_dirPath' to go direct to the folder (I think), e.g.   _dirPath + /folder name/spreadsheet_name.extension
+const wb = xlsx.readFile('all albums backup.ods') 
+
+
+ //create and assign a variable (I used 'ws') to access the specific worksheet tab in the spreadsheet, and use the name of the tab as the argument.  I'm wondering is this functions the same way as object notation, because 'sheets['tab_name']' was used; so maybe 'sheets.tab_name' might work, will have to test this.  
+var ws = wb.Sheets['Meet Me In London']
+
+// the album data is extracted from the worksheet and converted to JSON data using xlsx. use the worksheet tab information (ws) as an argument to the function
+var albumData = xlsx.utils.sheet_to_json(ws)
+
+
+ // get name of album from one of the objects of the JSON data that returns (each object will have the album name)
+var albumName = albumData[0].Album
+
+// get name of artist - even if multiple artists are featured, this is just for the JSON file name and won't be an issue in the database record
+var albumArtist = albumData[0].Artist 
+
+//create a string combining artist name and album title, separated with an underscore, with the extention '.json' (in quotes) added to the end and assign a variable, which will be used for the 'file' argument of the writeFile function (EXAMPLE: 'Bill Evans_Together again.json')
+var fileNameJson = albumArtist + '_' + albumName + '.json' 
+
+// stringify the album data and assign a variable to be used for the 'data' argument of the writeFile function
+var dataString = JSON.stringify(albumData) 
+
+// get the path to the file and assign it a variable (you can use console to check the path is correct prior to trying to create the file)
+const path = __dirname + '/' + fileDestination
+
+// using fileExists, do a boolean check for existence status
+const fileExists = fs.existsSync(path)
+
+// then use an IF/ELSE statement so that if the file does not exist one can be created, otherwise the creation process will be ignored - and a message informing the user is logged to the console. 
+// if file doesn't exist 
+if(fileExists === false){
+    // create file
+fs.writeFile(fileDestination, dataString, (err) =>{
+    console.log(err)
+})
+}else{ // otherwise file exists
+    console.log(fileDestination + ' already exists')
+}
+
+
+
+
+//write to the file using fs.writeFile(file_name, data, callback(for errors and other operations))
+
+
+
+
+
+
+
+
+
+
+
+
+
+

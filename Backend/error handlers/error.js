@@ -1,9 +1,10 @@
-// bring the custome error response here to use in the error handler. 
+// bring the custom error response here to use in the error handler. 
 const ErrorResponse = require("./custom_error")
 
 // this error handler is for SERVER errors
  const errorHandler = (err, req, res, next) =>{
     console.log(err)
+    // create an error object by spreading the incoming error
 let error = {...err}
 error.message = err.message
     // mongoose bad objectId

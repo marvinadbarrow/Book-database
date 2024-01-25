@@ -1,0 +1,96 @@
+
+change mongodb connection from 'mongodb://localhost:27017' to 'mongodb://127.0.0.1'
+This prevents errors (something to do with mongodb 17x and onward)
+
+to install with npm use: 
+npm 'install i mongoose'
+
+you'll need express too: 
+npm install i express
+
+then require: 
+const mongoose = require('mongoose')
+same with express, just change 'mongoose' to 'express'
+
+
+commands for updating object properties (see paragraph below code for explanation)
+  db.albums.updateOne({Album:"Mercy And Grace"}, {$set:{Tracks:13}})
+
+
+first object contains a searchable property:value pair for finding the main object, second object can take two propeties; '$set', whose value is an object that contains the new 'key:value' pair information for updating the object (NOTE: the value in the key:value pair can be an array; I used an object containing 'Tracks : Number' as the key:value pair, to add the number of tracks to that particular album because it was missing from the album object, and another property,   '$currentDate', whose 'key:value' pair is 'lastUpdated: Boolean', to show when the object was updated, if there was no last update (i.e. this is the first update since the object was created) then   $currentDate will create the key:value pair. 
+
+
+COMMAND TO DELETE ENTRIES (MANY)
+ db.songs.deleteMany({Album:"Musiq Soul Child Juslisen"})
+Deleted all songs with the album name in the filter
+
+FINDING STUFF - 
+You can find everything in a whole set of stuff in a collection, but you can also find things using several parameters. 
+for example, I might have a hardcover maths book on a particular subject so I could search all two parameters, using an object to define the parameters, as below: 
+db.books.mathematics.find({genre:"mathematics", format: "hardcover", subject: "trigonometry"})
+This will really narrow the search, and is especially useful when the database is huge, I guess that's how databases for companies such as barnes and noble or amazon work. 
+
+// options - you can even get really specific by using the second argument in the method.  so if I only wanted to show the title and publisher of the above book then I could add an object as the second argument stating such, i.e.:
+
+db.books.mathematics.find({genre:"mathematics", format: "hardcover", subject: "trigonometry"}, {Title: 1, Author:1})
+
+BUT - you can take it still further because you might want the books but not the format or subject at all - then just leave the first argument object empty... 
+db.books.mathematics.find({}, {Title: 1, Author:1})
+this will only return title/author alphabetically. 
+
+SEARCH COUNT. 
+To get how many results there are just tack this method on the end '.count()'. 
+
+LIMIT METHOD: 
+db.books.mathematics.find({}, {Title: 1, Author:1}).limit(4)
+this will only return four books (documents) sorted alphabetically because you used '1'. 
+
+SOLUTION FOR SEARCHING books by genre, where each book has several genres, listed in the array property for 'genres'. 
+It's the same code but operates in a different way. 
+db.books.mathematics.find({Genres: "statistics"}) will find all documents that have the word 'statistics' as one of the elements in its array of genres, so the returned document may have more than just the searched genre in its array. 
+
+UNIQUE SEARCH (EXACT MATCH)
+if you want an exact match, then, inside the object, take the genre word and insert it, in quotations, inside an array, as below
+db.books.mathematics.find({Genres: ["statistics"]}) this will return only the books list the singular genre of 'statistics'
+nothing returns if there are no books where the only genre is 'statistics'. 
+You can search for how many ever 'exact' terms, so if you did:
+db.books.mathematics.find({Genres: ["statistics", "mathematics"]}) - it would return all documents that have exactly and only those two genres. 
+
+
+SPECIAL OPERATORS... example - where you want a criteria of greater than or less than a number. e.g if you wanted to view products with ratings greater than 6..
+Then you need to use the operater '$gt' example: db.books.mathematics.find({rating: {$gt:6})
+this will give books giving ratings greater than 6. Other commands are $lt - less than,  $lte - less than or equal to,   $gte - greater than or equal to, (there are many more operators)
+
+'and' operator (although it's not called that)
+If you want to search for documents that list all of the selected genres then you need to use the '$all' operator on an array with the genres listed. e.g.
+db.books.mathematics.find({Genres:{$all: ["statistics", "mathematics", "geometry"]}})
+this will return books listing all of these genres (note that some of the books may have more, because this isn't an 'exact' match as such, it's basically a search for documents that have 'at least' those genres)
+
+INCREMENTING NUMBERS
+db.books.mathematics.updateOne({_id: OjectId(ID)}, {$inc:{Pages:2}})
+This will increase the page number on the specified book. 
+
+
+Pulling values from an array value
+db.books.mathematics.updateOne({_id: OjectId(ID)}, {$pull:{Genres:"statistics"}})
+This will remove 'statistics' from the 'Genre' array of the specified book. 
+
+PUSH value to an array... 
+db.books.mathematics.updateOne({_id: OjectId(ID)}, {$push:{Genres:"probability"}})
+This will add'statistics' to the 'Genre' array of the specified book. 
+
+PUSH 'several' to an array - replace "genre name" with an object where the operation is '$each' and the value is an array containing how many ever genre names you wish to add;
+{$each: ['genre', 'genre2', 'genre3]}
+so the above single push will change to:
+db.books.mathematics.updateOne({_id: OjectId(ID)}, {$push:{Genres:{$each: ['genre', 'genre2', 'genre3]}}})
+
+
+ENCRYPTING USER PASSWORDS ON DB
+install bycrypt
+'npm i bycryptjs'
+
+
+13 Jan work!
+do star rating by code (in popup element)
+add genres like YT hash tags (inside text area)
+description is easy, just a text area

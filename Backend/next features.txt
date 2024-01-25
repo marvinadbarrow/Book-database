@@ -1,0 +1,4 @@
+users can:
+see last 10 browsed books
+get emails when new book is added
+see new books added when logged in. 
